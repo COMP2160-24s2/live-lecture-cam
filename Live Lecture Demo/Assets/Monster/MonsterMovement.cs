@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: Break this down into Movement and Combat scripts.
+
 public class MonsterMovement : MonoBehaviour
 {
     [SerializeField] private float rotationRate = 1f;
     private float rotationModifier = 0;
     [SerializeField] private Transform target;
     
+    [SerializeField] private LayerMask rayLayers;
     [SerializeField] private Fireball fireball;
     [SerializeField] private float attackInterval = 5f;
     private float timer = 0;
@@ -93,23 +96,26 @@ public class MonsterMovement : MonoBehaviour
         float targetRelative = Vector3.Dot(myRight, toTarget);
         rotationModifier = targetRelative; // Keeps monster locked on player
 
-        timer -= Time.deltaTime;
-        if (timer <= 0)
+        // WARNING: ALL PHYSICS SHOULD GO IN FIXED UPDATE
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, toTarget, out hit, Mathf.Infinity, rayLayers))
         {
-
-            Shoot();
+            if (hit.collider.gameObject.layer == 6 && timer <= 0)
+            {
+                Debug.Log("Shooting");
+                Shoot();
+            }
         }
+        timer -= Time.deltaTime;
     }
 
     void OnTriggerEnter()
     {
         seesPlayer = true;
-        Debug.Log("Monster sees player");
     }
 
     void OnTriggerExit()
     {
         seesPlayer = false;
-        Debug.Log("Player ran away");
     }
 }
