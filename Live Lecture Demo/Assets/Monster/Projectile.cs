@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fireball : MonoBehaviour
+public class Projectile : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 20f;
     [SerializeField] private float range = 10f;
+    [SerializeField] private int damage = 4;
     private Vector3 startPosition;
 
     void Awake()
@@ -27,6 +28,14 @@ public class Fireball : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.layer == 6)
+        {
+            PlayerMove player = other.gameObject.GetComponent<PlayerMove>();
+            if (player != null)
+            {
+                player.CurrentHealth = (player.CurrentHealth - damage);
+            }
+        }
         Destroy(gameObject);
         Debug.Log("Collided with: " + other.gameObject);
     }
