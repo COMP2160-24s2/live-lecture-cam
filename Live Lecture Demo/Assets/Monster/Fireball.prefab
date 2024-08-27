@@ -245,6 +245,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 20
+  range: 10
+  damage: 5
 --- !u!135 &2203776497453162053
 SphereCollider:
   m_ObjectHideFlags: 0
