@@ -7,6 +7,14 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float moveSpeed = 20f;
     [SerializeField] private float range = 10f;
     [SerializeField] private int damage = 4;
+
+    public int Damage
+    {
+        get
+        {
+            return damage;
+        }
+    }
     private Vector3 startPosition;
 
     void Awake()
@@ -28,14 +36,6 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == 6)
-        {
-            PlayerMove player = other.gameObject.GetComponent<PlayerMove>();
-            if (player != null)
-            {
-                player.CurrentHealth = (player.CurrentHealth - damage);
-            }
-        }
         Destroy(gameObject);
         Debug.Log("Collided with: " + other.gameObject);
     }
